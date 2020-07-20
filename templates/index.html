@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bun venit!</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">Restaurant</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Acasa <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('items') }}">Produse</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Cos de cumparaturi</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('login') }}">Autentificare</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="#">Inregistrare</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="jumbotron">
+  <h1 class="display-3">Salutare!</h1>
+  <p class="lead">Bine ai venit pe site-ul restaurantului nostru!</p>
+  <hr class="my-4">
+  <p>Pentru a face o comanda, te rugam sa te autentifici.</p>
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" href="#" role="button">Autentificare</a>
+  </p>
+</div>
+</body>
+</html>

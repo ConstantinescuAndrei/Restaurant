@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Produse</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<input type="hidden" id="itemId">
+<div class="modal" id="add" tabindex="-1" role="dialog" aria-labelledby="label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="label">Adauga produsul in cos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="lead">Specificati cantitatea produsului</p>
+                <form class="form-inline my-2 my-lg-0" method="post">
+                    <fieldset>
+                        <input class="form-control mr-sm-2" type="text" name="quantity" id="quantity"
+                               placeholder="Cantitate">
+                        <button type="submit" class="btn btn-primary">Adauga</button>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anulare</button>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">Restaurant</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#">Acasa <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item  active">
+        <a class="nav-link" href="#">Produse</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Cos de cumparaturi</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('login') }}">Autentificare</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="#">Inregistrare</a>
+      </li>
+        {% if user_data['Name'] != '' %}
+        <li>
+            <h3>Salut, {{ user_data['Name'] }}!</h3>
+        </li>
+        {% endif %}
+    </ul>
+  </div>
+</nav>
+<h1>Aceasta este lista produselor noastre</h1>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col"></th>
+        <th scope="col">Nume</th>
+        <th scope="col">Pret</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in data %}
+        <tr class={{ "table-active" if row.Id % 2 == 0 }}>
+            <td><h3>{{ row.Id }}</h3></td>
+            <td><img src="../static/images/items/{{ row.ImageName }}.png", style="height: 100px; width: 100px; border-radius: 50%"></td>
+            <td><h3>{{ row.Name }}</h3></td>
+            <td><h3>{{ row.PricePerUnit }}</h3></td>
+            {% if user_data['Name'] != '' %}
+                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add" onclick="setItemId({{ row.Id }})">Adauga in cos</button></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<script>
+    function setItemId(item) {
+        document.getElementById('itemId').innerText = item;
+    }
+</script>
+</body>
+</html>
