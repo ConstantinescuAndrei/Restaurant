@@ -20,4 +20,5 @@ as
         (
          @Username, @Email, @Password, @Address
         )
+        select top 1 * from Users order by Id  DESC
     end

@@ -20,7 +20,22 @@ def home():
 @app.route('/register', methods=['POST'])
 def register():
     cursor = conn.cursor()
-    cursor.execute(request.form['UserName'], request.form['Email'], request.form['Password'], request.form['Address'])
+    username = request.form['Username']
+    cursor.execute("select dbo.CheckUsernameExists(?)", username)
+    res = cursor.fetchone()
+    if res[0]:
+        return "Username already exists"
+    email = request.form['Email']
+    cursor.execute("select dbo.CheckEmailExists(?)", email)
+    res = cursor.fetchone()
+    if res[0]:
+        return "Email already exists"
+    cursor.execute("exec dbo.Register ?, ?, ?, ?", (username, email, request.form['Password'], request.form['Address']))
+    res = cursor.fetchone()
+    if res[1] == username:
+        return "OK"
+    else:
+        return "Registration failed"
 
 
 @app.route('/login', methods=['POST'])
