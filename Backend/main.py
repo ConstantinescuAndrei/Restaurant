@@ -1,12 +1,8 @@
 from flask import Flask, request
-import mysql.connector
+import pyodbc
 
-conn = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="Virtual1234",
-  port="4000"
-)
+conn = pyodbc.connect('DRIVER={FreeTDS};SERVER=localhost;PORT=1433;UID=sa;PWD=Virtual1234;DATABASE'
+                      '=Restaurant;UseNTLMv2=yes;TDS_Version=8.0;Trusted_Domain=domain.local;')
 
 app = Flask(__name__)
 
@@ -14,11 +10,11 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     cursor = conn.cursor()
-    cursor.execute("call Restaurant.Register('test', 'test', 'test', 'test');")
+    cursor.execute("select * from dbo.Users")
 
     res = cursor.fetchone()
     print(res)
-    return res[0]
+    return res[1]
 
 
 @app.route('/register', methods=['POST'])

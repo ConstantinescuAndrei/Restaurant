@@ -4,4 +4,8 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
 Werkzeug==1.0.1
-mysql-connector-python~=8.0.21
+pip~=20.0.2
+six~=1.15.0
+protobuf~=3.12.2
+setuptools~=44.0.0
+pyodbc~=4.0.30
