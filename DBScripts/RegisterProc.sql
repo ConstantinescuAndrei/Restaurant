@@ -10,11 +10,11 @@ as
         where Email = @Email
         if(@UserExists is not null)
         begin
-            throw 500, 'Username exists', 1
+            throw 55000, 'Username exists', 1
         end
         if(@EmailExists is not null)
         begin
-            throw 500, 'Email exists', 1
+            throw 55000, 'Email exists', 1
         end
         insert into Users(UserName, Email, Password, Address) values
         (
