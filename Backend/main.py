@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 import pyodbc
 
 conn = pyodbc.connect('DRIVER={FreeTDS};SERVER=localhost;PORT=1433;UID=sa;PWD=Virtual1234;DATABASE'
@@ -6,15 +6,14 @@ conn = pyodbc.connect('DRIVER={FreeTDS};SERVER=localhost;PORT=1433;UID=sa;PWD=Vi
 
 app = Flask(__name__)
 
+user_data = {
+    'Name': ''
+}
+
 
 @app.route('/')
 def home():
-    cursor = conn.cursor()
-    cursor.execute("select * from dbo.Users")
-
-    res = cursor.fetchone()
-    print(res)
-    return res[1]
+    return render_template('index.html', user_data=user_data)
 
 
 @app.route('/register', methods=['POST'])
@@ -33,20 +32,35 @@ def register():
     cursor.execute("exec dbo.Register ?, ?, ?, ?", (username, email, request.form['Password'], request.form['Address']))
     res = cursor.fetchone()
     if res[1] == username:
+        global user_data
+        user_data['Name'] = res[1]
         return "OK"
     else:
         return "Registration failed"
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    cursor = conn.cursor()
-    cursor.execute("select dbo.Login(?, ?)", (request.form['Username'], request.form['Password']))
-    res = cursor.fetchone()
-    if res[0]:
-        return "OK"
+    if request.method == 'POST':
+        username = request.form['username']
+        cursor = conn.cursor()
+        cursor.execute("select dbo.Login(?, ?)", (username, request.form['password']))
+        res = cursor.fetchone()
+        if res[0]:
+            global user_data
+            user_data['Name'] = username
+            return render_template('login.html', user_data=user_data)
+        else:
+            return "Wrong credentials"
     else:
-        return "Wrong credentials"
+        return render_template('login.html',  user_data=user_data)
+
+
+@app.route('/items', methods=['GET'])
+def items():
+    cursor = conn.cursor()
+    cursor.execute("select * from dbo.Items")
+    return render_template('items.html', data=cursor, user_data=user_data)
 
 
 if __name__ == '__main__':
